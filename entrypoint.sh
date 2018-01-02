@@ -26,7 +26,7 @@ if [ $RESULT -eq 0 ]; then
   chown abc:abc /config
   chown abc:abc /var/lib/nginx
   chown -R abc:abc /var/lib/nginx/tmp
-  envsubst '${UPSTREAM_SERVER}' < /config/nginx.conf > /etc/nginx/nginx.conf
+  envsubst '${UPSTREAM_SERVER} ${DOMAIN}' < /config/nginx.conf > /etc/nginx/nginx.conf
 
   supervisord -c /supervisord.conf
 fi
