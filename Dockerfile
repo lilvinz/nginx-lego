@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 ENV GOPATH /go
 
-RUN apk --no-cache add ca-certificates go git musl-dev && \
+RUN apk --no-cache add ca-certificates shadow go git musl-dev && \
     rm -rf /var/cache/apk/* && \
     go get -u github.com/xenolf/lego && \
     cd /go/src/github.com/xenolf/lego && \
