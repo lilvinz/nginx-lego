@@ -14,9 +14,13 @@ RUN apk --no-cache add ca-certificates go git musl-dev && \
     rm -rf /go
 
 RUN \
-    apk add --no-cache nginx nginx-mod-stream supervisor gettext bash
+    apk add --no-cache nginx nginx-mod-stream supervisor gettext bash && \
+    groupmod -g 1000 users && \
+    useradd -u 911 -U -d /config -s /bin/false abc && \
+    usermod -G users abc && \
+    mkdir -p /config
 
-ADD nginx.conf /
+ADD nginx.conf /config
 ADD supervisord.conf /
 ADD crontab /etc/
 

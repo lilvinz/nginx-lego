@@ -17,7 +17,17 @@ if [ ! -f "/var/lego/certificates/${DOMAIN}.crt" ] || [ ! -f "/var/lego/certific
 fi
 
 if [ $RESULT -eq 0 ]; then
-  envsubst < /nginx.conf > /etc/nginx/nginx.conf
+  PUID=${PUID:-911}
+  PGID=${PGID:-911}
+
+  groupmod -o -g "$PGID" abc
+  usermod -o -u "$PUID" abc
+
+  chown abc:abc /config
+  chown abc:abc /var/lib/nginx
+  chown -R abc:abc /var/lib/nginx/tmp
+  envsubst '${UPSTREAM_SERVER}' < /config/nginx.conf > /etc/nginx/nginx.conf
+
   supervisord -c /supervisord.conf
 fi
 
