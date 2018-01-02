@@ -17,9 +17,12 @@ RUN \
     groupmod -g 1000 users && \
     useradd -u 911 -U -d /config -s /bin/false abc && \
     usermod -G users abc && \
-    mkdir -p /config
+    mkdir -p \
+        /config \
+        /data/www \
+        /var/lego
 
-ADD nginx.conf /config
+ADD nginx.conf /config/
 ADD supervisord.conf /
 ADD crontab /etc/
 
@@ -29,9 +32,6 @@ ADD entrypoint.sh /
 RUN chmod 775 /renew.sh && chmod 775 /entrypoint.sh
 
 RUN chmod 600 /etc/crontab
-
-RUN mkdir -p /var/lego
-RUN mkdir -p /public
 
 VOLUME /var/lego
 
