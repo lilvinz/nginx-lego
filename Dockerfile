@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 ENV GOPATH /go
 
-RUN apk update && apk add ca-certificates go git musl-dev && \
+RUN apk --no-cache add ca-certificates go git musl-dev && \
     rm -rf /var/cache/apk/* && \
     go get -u github.com/xenolf/lego && \
     cd /go/src/github.com/xenolf/lego && \
@@ -11,10 +11,10 @@ RUN apk update && apk add ca-certificates go git musl-dev && \
     cd /go/src/github.com/anarcher/go-cron && \
     go build -o /usr/bin/go-cron . && \
     apk del go git musl-dev && \
-    rm -rf /var/cache/apk/* && \
     rm -rf /go
 
-RUN apk update && apk add nginx nginx-mod-stream supervisor gettext bash && rm -rf /var/cache/apk/*
+RUN \
+    apk add --no-cache nginx nginx-mod-stream supervisor gettext bash
 
 ADD nginx.conf /
 ADD supervisord.conf /
