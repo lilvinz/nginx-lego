@@ -13,7 +13,7 @@ lego \
     --email="${EMAIL}" \
     --domains=${DOMAIN} \
     --dns="${DNS_PROVIDER}" \
-    --dns-resolvers="8.8.8.8,8.8.4.4" \
+    --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
     renew \
     --days="${RENEW_DAYS:="30"}"
 

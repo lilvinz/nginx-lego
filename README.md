@@ -15,6 +15,7 @@ name|description
 `DOMAIN` | Domain name for certificate generation 
 `EMAIL` | Email for certificate generation 
 `DNS_PROVIDER` | Lego dns provider - see https://github.com/xenolf/lego/tree/master/providers/dns 
+`DNS_RESOLVER` | (optional) Resolver to use for performing recursive DNS queries. Supported: host:port. The default is to use Google's DNS resolver
 `UPSTREAM_SERVER` | Upstream server address 
 `LEGO_SERVER` | (optional) Address to Let’s Encrypt server, defaults to https://acme-v01.api.letsencrypt.org/directory 
 `RENEW_DAYS` | (optional) Number of days left for certificate validity before it is renewed, default to 30 
@@ -31,6 +32,7 @@ docker run --name nginx-lego \
   -e DOMAIN=some.example.com \ 
   -e EMAIL=email@example.com \ 
   -e DNS_PROVIDER=route53 \ 
+  -e DNS_RESOLVER=8.8.8.8 \ 
   -e AWS_REGION=eu-central-1 \ 
   -e AWS_ACCESS_KEY_ID=XXX \ 
   -e AWS_SECRET_ACCESS_KEY=YYY \ 
@@ -73,6 +75,8 @@ spec:
             value: email@example.com 
           - name: DNS_PROVIDER 
             value: route53 
+          - name: DNS_RESOLVER
+            value: 8.8.8.8 
           - name: AWS_REGION 
             value: eu-central-1 
           - name: AWS_ACCESS_KEY_ID 

@@ -11,6 +11,7 @@ if [ ! -f "/var/lego/certificates/${DOMAIN}.crt" ] || [ ! -f "/var/lego/certific
         --email="${EMAIL}" \
         --domains=${DOMAIN} \
         --dns="${DNS_PROVIDER}" \
+        --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
         -a \
         run
     RESULT=$?
