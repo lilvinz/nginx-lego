@@ -41,3 +41,4 @@ RUN chmod 600 /etc/crontab
 VOLUME /var/lego
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+
