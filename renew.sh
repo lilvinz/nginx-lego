@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 hash_certs() {
     find /var/lego/certificates \
@@ -9,9 +9,19 @@ PRE_HASH=$(hash_certs)
 
 lego \
     --path="/var/lego" \
-    --server="${LEGO_SERVER:=https://acme-v01.api.letsencrypt.org/directory}" \
+    --server="${LEGO_SERVER:=https://acme-v02.api.letsencrypt.org/directory}" \
     --email="${EMAIL}" \
     --domains=${DOMAIN} \
+    --dns="${DNS_PROVIDER}" \
+    --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
+    renew \
+    --days="${RENEW_DAYS:="30"}"
+
+lego \
+    --path="/var/lego" \
+    --server="${LEGO_SERVER:=https://acme-v02.api.letsencrypt.org/directory}" \
+    --email="${EMAIL}" \
+    --domains=${DOMAIN2} \
     --dns="${DNS_PROVIDER}" \
     --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
     renew \

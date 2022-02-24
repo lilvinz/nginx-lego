@@ -1,22 +1,27 @@
-FROM alpine:3.7
+FROM golang:1-alpine as builder
 
-ENV GOPATH /go
+RUN apk --no-cache --no-progress add make git
 
-RUN apk --no-cache add ca-certificates shadow go git musl-dev && \
-    go get -u github.com/xenolf/lego && \
-    cd /go/src/github.com/xenolf/lego && \
-    go build -o /usr/bin/lego . && \
-    go get -u github.com/anarcher/go-cron && \
-    cd /go/src/github.com/anarcher/go-cron && \
-    go build -o /usr/bin/go-cron . && \
-    apk del go git musl-dev && \
-    rm -rf /go
+WORKDIR /go
+
+ENV GO111MODULE on
+
+RUN git clone https://github.com/go-acme/lego.git \
+    && cd lego \
+    && go mod download \
+    && make build
+
+RUN go install github.com/anarcher/go-cron@latest
+
+
+
+FROM alpine:3.15
+
+COPY --from=builder /go/lego/dist/lego /usr/bin/lego
+COPY --from=builder /go/bin/go-cron /usr/bin/go-cron
 
 RUN \
-    apk add --no-cache nginx nginx-mod-stream supervisor gettext bash && \
-    groupmod -g 1000 users && \
-    useradd -u 911 -U -d /config -s /bin/false abc && \
-    usermod -G users abc && \
+    apk add --no-cache shadow nginx nginx-mod-stream supervisor gettext bash && \
     mkdir -p \
         /config \
         /data/www \
