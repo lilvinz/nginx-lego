@@ -1,4 +1,4 @@
-FROM golang:1-alpine as builder
+FROM golang:1.19.1-alpine3.16 as builder
 
 RUN apk --no-cache --no-progress add make git
 
@@ -8,6 +8,7 @@ ENV GO111MODULE on
 
 RUN git clone https://github.com/go-acme/lego.git \
     && cd lego \
+    && git checkout v4.8.0 \
     && go mod download \
     && make build
 
@@ -15,7 +16,7 @@ RUN go install github.com/anarcher/go-cron@latest
 
 
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 COPY --from=builder /go/lego/dist/lego /usr/bin/lego
 COPY --from=builder /go/bin/go-cron /usr/bin/go-cron

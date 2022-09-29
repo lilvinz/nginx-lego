@@ -3,7 +3,7 @@
 hash_certs() {
     find /var/lego/certificates \
         -type f \
-        -exec python -sBc "import hashlib;print hashlib.md5(open('{}','rb').read()).hexdigest()" \;
+        -exec python3 -sBc "import hashlib;print(hashlib.md5(open('{}','rb').read()).hexdigest())" \;
 }
 PRE_HASH=$(hash_certs)
 
@@ -13,7 +13,7 @@ lego \
     --email="${EMAIL}" \
     --domains=${DOMAIN} \
     --dns="${DNS_PROVIDER}" \
-    --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
+    --dns.resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
     renew \
     --days="${RENEW_DAYS:="30"}"
 
@@ -23,7 +23,7 @@ lego \
     --email="${EMAIL}" \
     --domains=${DOMAIN2} \
     --dns="${DNS_PROVIDER}" \
-    --dns-resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
+    --dns.resolvers="${DNS_RESOLVER:="8.8.8.8"}" \
     renew \
     --days="${RENEW_DAYS:="30"}"
 
